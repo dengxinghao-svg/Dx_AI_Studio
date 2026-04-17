@@ -1,0 +1,237 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dx_AI_Studio 编辑器</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../lib/styles/editor.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="left-dock">
+      <button class="left-dock__main" id="quickAddBtn">+</button>
+      <button class="left-dock__tool" data-type="text" title="添加文本节点">文</button>
+      <button class="left-dock__tool" data-type="image" title="添加图片节点">图</button>
+      <button class="left-dock__tool" data-type="video" title="添加视频节点">视</button>
+      <button class="left-dock__tool" data-type="asset" title="添加资产节点">资</button>
+      <div class="left-dock__divider"></div>
+      <button class="left-dock__tool left-dock__tool--muted" id="fitViewBtn" title="适应视图">F</button>
+      <button class="left-dock__tool left-dock__tool--muted" id="resetViewBtn" title="重置">R</button>
+    </aside>
+
+    <header class="floating-title" id="floatingTitleTrigger" role="button" tabindex="0" title="返回工作空间">
+      <div class="floating-title__mark"></div>
+      <div>
+        <p class="floating-title__meta">未命名项目</p>
+        <h1>未命名对话</h1>
+      </div>
+    </header>
+
+    <main class="workspace">
+      <section class="canvas-stage">
+        <div class="canvas-frame" id="canvasFrame">
+          <div class="canvas-grid"></div>
+          <svg class="connections-layer" id="connectionsLayer"></svg>
+          <div class="selection-toolbar hidden" id="selectionToolbar">
+            <button class="selection-toolbar__btn" id="createAssetBtn">创建资产</button>
+            <button class="selection-toolbar__btn" id="addToChatBtn">加入对话</button>
+            <button class="selection-toolbar__btn" id="groupNodesBtn">打组</button>
+            <button class="selection-toolbar__btn selection-toolbar__btn--danger" id="deleteSelectionBtn">删除</button>
+          </div>
+          <div class="canvas-world" id="canvasWorld"></div>
+          <div class="canvas-hint">左键框选节点，中键拖动画布，按住空格再左键也可平移。</div>
+        </div>
+
+        <div class="canvas-minimap">
+          <div class="canvas-minimap__preview" id="minimapPreview">
+            <div class="canvas-minimap__scene" id="minimapScene"></div>
+            <div class="canvas-minimap__viewport" id="minimapViewport"></div>
+          </div>
+          <div class="canvas-minimap__toolbar">
+            <div class="canvas-minimap__controls">
+              <button class="mini-btn" id="toggleMinimapBtn" title="关闭缩略图">◧</button>
+              <button class="mini-btn" id="snapGridBtn" title="节点按网格吸附">⌗</button>
+              <button class="mini-btn" id="overviewBtn" title="总览所有节点">◎</button>
+              <input class="zoom-slider" id="zoomSlider" type="range" min="55" max="185" value="100">
+            </div>
+            <div class="canvas-help" id="shortcutHelpDock">
+              <button class="mini-btn mini-btn--help" id="shortcutHelpBtn" title="快捷键">?</button>
+              <div class="shortcut-query" id="shortcutQuery">
+                <button class="shortcut-query__item" id="shortcutQueryBtn" type="button">
+                  <span class="shortcut-query__icon">⌘</span>
+                  <span>快捷键</span>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="zoom-indicator" id="zoomIndicator">100%</div>
+        </div>
+      </section>
+
+      <aside class="inspector">
+        <div class="inspector__topbar">
+          <span id="editorProjectTitle">未命名项目</span>
+          <div class="inspector__window">
+            <button title="新建">+</button>
+            <button title="收起">-</button>
+            <button title="关闭">x</button>
+          </div>
+        </div>
+
+        <div class="inspector__content">
+          <section class="inspector-card inspector-card--summary">
+            <h2 id="summaryTitle">序列（4 节点）</h2>
+            <p id="summaryMeta">当前画布聚焦在主参考图到视频节点的串联，右侧建议会根据你选中的节点变化。</p>
+            <div class="inspector-actions">
+              <button class="action-btn action-btn--primary" type="button" id="runSelectedNodeBtn">执行当前节点</button>
+              <button class="action-btn" type="button" id="runChainBtn">执行整条链</button>
+              <button class="action-btn action-btn--ghost" type="button" id="resetWorkflowBtn">重置状态</button>
+            </div>
+          </section>
+
+          <section class="inspector-card">
+            <h3>节点编辑</h3>
+            <p id="inspectorEmpty">先在画布中选择一个节点，右侧会显示当前节点说明与建议。</p>
+
+            <form class="inspector-form hidden" id="inspectorForm">
+              <label>
+                <span>节点标题</span>
+                <input id="nodeTitleInput" type="text">
+              </label>
+              <label>
+                <span>提示词 / 备注</span>
+                <textarea id="nodePromptInput" rows="6"></textarea>
+              </label>
+              <label>
+                <span>模型</span>
+                <select id="nodeModelInput">
+                  <option value="gpt-4.1">gpt-4.1</option>
+                  <option value="flux-pro">flux-pro</option>
+                  <option value="kling-2">kling-2</option>
+                  <option value="tap-mix">tap-mix</option>
+                </select>
+              </label>
+              <div class="inspector-grid">
+                <label>
+                  <span>尺寸</span>
+                  <select id="nodeSizeInput">
+                    <option value="1024x1024">1024 × 1024</option>
+                    <option value="1280x720">1280 × 720</option>
+                    <option value="720x1280">720 × 1280</option>
+                    <option value="1920x1080">1920 × 1080</option>
+                  </select>
+                </label>
+                <label>
+                  <span>运行次数</span>
+                  <input id="nodeRunsInput" type="number" min="1" max="8">
+                </label>
+              </div>
+              <button type="button" class="action-btn action-btn--primary" id="simulateBtn">生成预览</button>
+            </form>
+          </section>
+
+          <section class="inspector-card">
+            <h3>可以加强的连接</h3>
+            <ul class="analysis-list" id="analysisList">
+              <li>把静帧节点连接到多个视频节点，可以快速对比不同镜头风格。</li>
+              <li>同一组里的主参考图建议只保留一张，避免分支太早发散。</li>
+              <li>已经完成的视频节点可向下串到成片节点，形成完整序列。</li>
+            </ul>
+          </section>
+
+          <section class="inspector-card">
+            <h3>会话状态</h3>
+            <ul class="session-list" id="sessionList">
+              <li><strong>状态</strong><span>空闲</span></li>
+              <li><strong>节点数</strong><span id="nodeCount">0</span></li>
+              <li><strong>连线数</strong><span id="connectionCount">0</span></li>
+              <li><strong>节点状态</strong><span id="workflowStatusValue">未选择</span></li>
+              <li><strong>上游数量</strong><span id="workflowUpstreamCount">-</span></li>
+              <li><strong>下游数量</strong><span id="workflowDownstreamCount">-</span></li>
+              <li class="session-list__item--stacked"><strong>上游节点</strong><span class="session-list__value" id="workflowUpstreamTitles">未选择节点</span></li>
+              <li class="session-list__item--stacked"><strong>下游节点</strong><span class="session-list__value" id="workflowDownstreamTitles">未选择节点</span></li>
+            </ul>
+          </section>
+
+          <section class="inspector-card">
+            <h3>工作流执行</h3>
+            <ul class="session-list" id="workflowRunList">
+              <li><strong>执行模式</strong><span id="workflowExecutionMode">未执行</span></li>
+              <li><strong>最近运行</strong><span id="workflowLastRunValue">-</span></li>
+              <li><strong>运行次数</strong><span id="workflowRunCountValue">0</span></li>
+              <li><strong>输入数</strong><span id="workflowInputCountValue">0</span></li>
+              <li><strong>输出类型</strong><span id="workflowOutputTypeValue">-</span></li>
+              <li class="session-list__item--stacked"><strong>执行摘要</strong><span class="session-list__value" id="workflowSummaryValue">请选择节点后查看执行信息。</span></li>
+              <li class="session-list__item--stacked"><strong>错误信息</strong><span class="session-list__value" id="workflowErrorValue">无</span></li>
+            </ul>
+            <div class="workflow-output-preview" id="workflowOutputPreview">
+              <p class="workflow-output-preview__empty">当前节点尚未产生输出。</p>
+            </div>
+          </section>
+
+          <section class="inspector-card inspector-card--chat">
+            <div class="chat-shortcuts">
+              <button class="chat-chip" data-workflow="storyboard">分镜流程</button>
+              <button class="chat-chip" data-workflow="product">商品广告</button>
+              <button class="chat-chip" data-workflow="shortvideo">短视频</button>
+            </div>
+            <div class="chat-input">
+              <textarea id="chatPrompt" rows="3" placeholder="描述操作作用，或继续扩写当前节点..."></textarea>
+              <div class="chat-input__footer">
+                <span>Pro</span>
+                <button class="send-btn" id="sendPromptBtn">→</button>
+              </div>
+            </div>
+          </section>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <template id="nodeTemplate">
+    <article class="canvas-node">
+      <div class="canvas-node__header">
+        <span class="canvas-node__badge"></span>
+        <div class="canvas-node__actions">
+          <button class="canvas-node__delete" type="button" title="删除节点">×</button>
+          <button class="canvas-node__link" type="button" title="连接到下一个节点">+</button>
+        </div>
+      </div>
+      <div class="canvas-node__media">
+        <img class="canvas-node__preview" alt="" draggable="false">
+      </div>
+      <button class="canvas-node__port canvas-node__port--left" data-side="left" type="button" title="发起或连接到上一个节点">+</button>
+      <button class="canvas-node__port canvas-node__port--right" data-side="right" type="button" title="发起或连接到下一个节点">+</button>
+      <div class="canvas-node__body">
+        <h3 class="canvas-node__title"></h3>
+        <p class="canvas-node__meta"></p>
+        <textarea class="canvas-node__prompt" rows="4"></textarea>
+      </div>
+    </article>
+  </template>
+
+  <div class="hidden" aria-hidden="true">
+    <button id="runBtn" type="button" tabindex="-1"></button>
+    <button id="shareBtn" type="button" tabindex="-1"></button>
+  </div>
+
+  <script src="../../lib/stores/project-store.js"></script>
+  <script src="../../lib/scripts/workflow-api.js"></script>
+  <script src="../../lib/scripts/editor/state.js"></script>
+  <script src="../../lib/scripts/editor/history.js"></script>
+  <script src="../../lib/scripts/editor/editor-panel.js"></script>
+  <script src="../../lib/scripts/editor/image-node-enhancements.js"></script>
+  <script src="../../lib/scripts/editor/connections.js"></script>
+  <script src="../../lib/scripts/editor/groups.js"></script>
+  <script src="../../lib/scripts/editor/minimap.js"></script>
+  <script src="../../lib/scripts/editor/nodes.js"></script>
+  <script src="../../lib/scripts/editor/image-top-toolbar.js"></script>
+  <script src="../../lib/scripts/editor/workflow.js"></script>
+  <script src="../../lib/scripts/editor/events.js"></script>
+  <script src="../../lib/scripts/editor/editor-main.js"></script>
+  <script src="../../lib/scripts/editor-bridge.js"></script>
+</body>
+</html>
