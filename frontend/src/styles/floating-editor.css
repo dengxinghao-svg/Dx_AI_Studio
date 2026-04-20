@@ -1,0 +1,228 @@
+.node-editor {
+  position: absolute;
+  left: 50%;
+  top: 20px;
+  z-index: 13;
+  width: min(580px, calc(100% - 240px));
+  pointer-events: auto;
+}
+
+.node-editor__card {
+  padding: 14px 16px 16px;
+  border-radius: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(29, 29, 29, 0.97);
+  box-shadow: 0 26px 60px rgba(0, 0, 0, 0.46);
+  backdrop-filter: blur(20px);
+}
+
+.node-editor__toolbar,
+.node-editor__footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.node-editor__toolbar {
+  margin-bottom: 10px;
+}
+
+.node-editor__toolbar-spacer {
+  flex: 1;
+}
+
+.node-editor__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.node-editor__status-badge {
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.05);
+  font-size: 12px;
+}
+
+.node-editor__status-meta {
+  color: #a1a1aa;
+  font-size: 12px;
+}
+
+.node-editor__inputs {
+  display: grid;
+  gap: 10px;
+}
+
+.node-editor__field {
+  display: grid;
+  gap: 8px;
+}
+
+.node-editor__field span {
+  color: #a1a1aa;
+  font-size: 12px;
+}
+
+.node-editor__field input,
+.node-editor__field textarea {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  color: #f5f7fb;
+  border-radius: 16px;
+  padding: 12px 14px;
+  outline: none;
+}
+
+.node-editor__model-stack {
+  display: grid;
+  gap: 10px;
+}
+
+.node-editor__model-presets {
+  position: relative;
+  display: block;
+}
+
+.node-editor__model-trigger,
+.node-editor__model-option {
+  width: 100%;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(19, 22, 31, 0.96);
+  color: #f5f7fb;
+  padding: 12px 14px;
+  outline: none;
+}
+
+.node-editor__model-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.node-editor__model-chevron {
+  transition: transform 0.16s ease;
+}
+
+.node-editor__model-chevron.is-open {
+  transform: rotate(180deg);
+}
+
+.node-editor__model-menu {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 8px);
+  z-index: 24;
+  display: grid;
+  gap: 6px;
+  padding: 8px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(19, 22, 31, 0.98);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.34);
+  backdrop-filter: blur(18px);
+}
+
+.node-editor__model-option {
+  text-align: left;
+  cursor: pointer;
+}
+
+.node-editor__model-option:hover,
+.node-editor__model-option.is-active,
+.node-editor__model-trigger:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.node-editor__model-option.is-active {
+  color: #fff;
+}
+
+@keyframes workflow-stream-pulse {
+  0%,
+  80%,
+  100% {
+    opacity: 0.28;
+    transform: translateY(0);
+  }
+
+  40% {
+    opacity: 1;
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes workflow-running-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(96, 165, 250, 0.08);
+  }
+
+  50% {
+    box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.06);
+  }
+}
+
+.node-editor__prompt {
+  min-height: 116px;
+  resize: vertical;
+}
+
+.node-editor--text-mode .node-editor__prompt {
+  border: 0;
+  border-radius: 18px;
+  background: transparent;
+  padding: 0;
+  resize: none;
+}
+
+.node-editor__footer {
+  justify-content: space-between;
+  margin-top: 12px;
+}
+
+.node-editor--text-mode .node-editor__footer {
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  flex-wrap: wrap;
+}
+
+.node-editor__meta-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.node-editor__field--meta {
+  min-width: 160px;
+}
+
+.node-editor__send {
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: #f3f4f6;
+  color: #090909;
+  font-weight: 700;
+}
+
+.node-editor--text-mode .node-editor__field span {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.node-editor--text-mode .node-editor__field--meta {
+  min-width: 180px;
+}
+
+.node-editor--text-mode .node-editor__send {
+  margin-left: auto;
+  min-width: 36px;
+  height: 36px;
+  padding: 0 16px;
+}
+

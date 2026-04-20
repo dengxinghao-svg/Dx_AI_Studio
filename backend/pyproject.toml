@@ -1,0 +1,14 @@
+[project]
+name = "dx-ai-studio-v2-backend"
+version = "0.1.0"
+description = "FastAPI backend scaffold for Dx AI Studio V2"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi>=0.136.0",
+    "httpx>=0.28.1",
+    "pydantic-settings>=2.13.1",
+    "uvicorn[standard]>=0.44.0",
+]
+
+[dependency-groups]
+dev = []

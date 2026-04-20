@@ -1,0 +1,110 @@
+.canvas-minimap-dock {
+  position: absolute;
+  left: 14px;
+  bottom: 18px;
+  z-index: 12;
+  display: grid;
+  gap: 8px;
+  justify-items: start;
+  width: 176px;
+}
+
+.canvas-minimap {
+  width: 176px !important;
+  height: 148px !important;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(24, 24, 24, 0.9);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+}
+
+.canvas-minimap.react-flow__panel {
+  left: 14px;
+  right: auto;
+  bottom: 56px;
+  margin: 0;
+}
+
+.canvas-minimap-dock__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  overflow: visible;
+}
+
+.canvas-minimap-dock__controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 7px;
+  width: 142px;
+  min-height: 36px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(24, 24, 24, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.38);
+}
+
+.canvas-minimap-dock__icon-button {
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #f5f7fb;
+  display: inline-grid;
+  place-items: center;
+  padding: 0;
+}
+
+.canvas-minimap-dock__icon-button svg {
+  width: 14px;
+  height: 14px;
+}
+
+.canvas-minimap-dock__icon-button.is-active {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.canvas-minimap-dock__help-button {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: rgba(24, 24, 24, 0.96);
+  color: #f5f7fb;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.38);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.canvas-minimap-dock__zoom {
+  display: none;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(20, 24, 35, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #dbe3f8;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+}
+
+.canvas-global-hint {
+  position: absolute;
+  left: 92px;
+  bottom: 24px;
+  z-index: 11;
+  max-width: 280px;
+  margin: 0;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(18, 18, 18, 0.82);
+  padding: 10px 14px;
+  color: #a1a1aa;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
